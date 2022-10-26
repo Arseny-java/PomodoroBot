@@ -12,11 +12,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.concurrent.TimeUnit;
 
 public class PomodoroBot extends TelegramLongPollingCommandBot {
-    public static final String BOT_TOKEN = "5756520906:AAGtJkkDPPEbRdxvMG44wK2bpkZxSZyTFiM";
+    public static final String BOT_TOKEN = "5477088652:AAHugvGCftihxYlmdJyKuyZW9wlYfO16zBU";
     public static final String BOT_USERNAME = "SenyaPomodorobot";
     public static final int WORK = 25;
     public static final int BREAK = 5;
-
+    public static String chatId;
     public PomodoroBot() throws TelegramApiException {
         TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
         try {
@@ -41,6 +41,7 @@ public class PomodoroBot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
+        chatId = update.getMessage().getChatId().toString();
         if (update.hasMessage() && isNumeric(update.getMessage().getText()) && StartCommand.isStart) {
             String message;
             StartCommand.isStart = false;
@@ -77,7 +78,7 @@ public class PomodoroBot extends TelegramLongPollingCommandBot {
 
     private void sendMessage(String messageText) {
         SendMessage message = new SendMessage();
-        message.setChatId("1651191402");
+        message.setChatId(chatId);
         message.setText(messageText);
         try {
             execute(message);
